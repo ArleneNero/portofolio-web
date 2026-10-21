@@ -1,6 +1,6 @@
 import { ArrowUpRight, Download, Github, Mail } from 'lucide-react';
 import { profile } from '../../data/profile';
-import { safeExternalUrl, safeMailto } from '../../utils/links';
+import { safeMailto } from '../../utils/links';
 import { assetUrl } from '../../utils/media';
 
 export function Contact() {
