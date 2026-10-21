@@ -2,6 +2,10 @@ import { useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import { sectionIds, useActiveSection } from '../../hooks/useActiveSection';
 import { site } from '../../data/site';
+import { experience } from '../../data/experience';
+import { awards } from '../../data/awards';
+
+const visibleSections = sectionIds.filter(id => (id !== 'experience' || experience.length > 0) && (id !== 'awards' || awards.length > 0));
 
 const labels: Record<(typeof sectionIds)[number], string> = {
   home: 'Home', about: 'About', projects: 'Projects', skills: 'Skills',
@@ -17,7 +21,7 @@ export function FloatingNavbar() {
       <div className="header-shell">
         <a className="wordmark" href="#home" aria-label="Go to home">portfolio<span className="wordmark-dot">.</span></a>
         <nav className="floating-nav" aria-label="Main navigation">
-          {sectionIds.map((id) => (
+          {visibleSections.map((id) => (
             <a key={id} href={`#${id}`} className={`nav-link ${active === id ? 'is-active' : ''}`}
               aria-current={active === id ? 'location' : undefined}>{labels[id]}</a>
           ))}
@@ -31,7 +35,7 @@ export function FloatingNavbar() {
       <nav id="mobile-navigation" className={`mobile-navigation ${menuOpen ? 'is-open' : ''}`} aria-label="Mobile navigation" inert={!menuOpen} onKeyDown={(e) => {
         if (e.key === 'Escape') setMenuOpen(false);
       }}>
-        {sectionIds.map((id) => (
+        {visibleSections.map((id) => (
           <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}
             aria-current={active === id ? 'location' : undefined}
             className={active === id ? 'is-active' : ''}>{labels[id]}</a>

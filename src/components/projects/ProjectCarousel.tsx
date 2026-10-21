@@ -15,9 +15,10 @@ export function ProjectCarousel({ items, onOpen }: { items: Project[]; onOpen: (
     if (!el) return;
     const max = Math.max(0, el.scrollWidth - el.clientWidth);
     const cards = Array.from(el.querySelectorAll<HTMLElement>('.project-card'));
+    const containerLeft = el.getBoundingClientRect().left;
     const active = cards.reduce((best, card, index) => {
-      const distance = Math.abs(card.offsetLeft - el.scrollLeft);
-      const bestDistance = Math.abs((cards[best]?.offsetLeft ?? 0) - el.scrollLeft);
+      const distance = Math.abs(card.getBoundingClientRect().left - containerLeft);
+      const bestDistance = Math.abs((cards[best]?.getBoundingClientRect().left ?? containerLeft) - containerLeft);
       return distance < bestDistance ? index : best;
     }, 0);
     setState({
@@ -42,23 +43,7 @@ export function ProjectCarousel({ items, onOpen }: { items: Project[]; onOpen: (
     return () => { observer.disconnect(); el.removeEventListener('scroll', handleScroll); cancelAnimationFrame(raf); };
   }, [items, measure]);
 
-  useEffect(() => {
-    const el = viewportRef.current;
-    if (!el) return;
-    const handleWheel = (event: WheelEvent) => {
-      if (event.ctrlKey || event.metaKey || event.shiftKey || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
-      const max = el.scrollWidth - el.clientWidth;
-      if (max <= 1) return;
-      // Leave native vertical page scroll enabled at the start and end.
-      const canMove = event.deltaY > 0 ? el.scrollLeft < max - 2 : el.scrollLeft > 2;
-      if (canMove) {
-        event.preventDefault();
-        el.scrollLeft += event.deltaY;
-      }
-    };
-    el.addEventListener('wheel', handleWheel, { passive: false });
-    return () => el.removeEventListener('wheel', handleWheel);
-  }, [items]);
+  // Keep vertical page scrolling native; horizontal navigation uses arrows, swipe and drag.
 
   const move = (direction: number) => {
     const el = viewportRef.current;
@@ -67,7 +52,7 @@ export function ProjectCarousel({ items, onOpen }: { items: Project[]; onOpen: (
     const target = cards[Math.min(Math.max(0, state.active + direction), cards.length - 1)];
     if (!target) return;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    el.scrollTo({ left: target.offsetLeft, behavior: reduced ? 'instant' : 'smooth' });
+    el.scrollTo({ left: target.getBoundingClientRect().left - el.getBoundingClientRect().left + el.scrollLeft, behavior: reduced ? 'instant' : 'smooth' });
   };
 
   if (items.length === 0) return <p className="section-empty">Projects will appear here once added to <code>src/data/projects.ts</code>.</p>;
@@ -75,7 +60,12 @@ export function ProjectCarousel({ items, onOpen }: { items: Project[]; onOpen: (
   return (
     <div className="carousel-shell">
       <div ref={viewportRef} className={`project-viewport ${dragging ? 'is-dragging' : ''}`} {...dragHandlers}
-        role="region" aria-roledescription="carousel" aria-label="Selected projects" tabIndex={0}>
+        role="region" aria-roledescription="carousel" aria-label="Selected projects" tabIndex={0}
+        onKeyDown={(event) => {
+          if (event.target !== event.currentTarget) return;
+          if (event.key === 'ArrowLeft') { event.preventDefault(); move(-1); }
+          if (event.key === 'ArrowRight') { event.preventDefault(); move(1); }
+        }}>
         {items.map((project, index) => <ProjectCard key={project.id} project={project} index={index} onOpen={() => onOpen(project)}/>)}
       </div>
       <div className="carousel-footer">
@@ -87,7 +77,7 @@ export function ProjectCarousel({ items, onOpen }: { items: Project[]; onOpen: (
           <span style={{ transform: `scaleX(${state.canScroll ? Math.max(0.06, state.progress / 100) : 1})` }}/>
         </div>
         <div className="carousel-controls">
-          <span className="carousel-hint">SCROLL / DRAG</span>
+          <span className="carousel-hint">DRAG / SWIPE</span>
           <button type="button" aria-label="Previous project" onClick={() => move(-1)} disabled={state.atStart || !state.canScroll}><ArrowLeft size={17}/></button>
           <button type="button" aria-label="Next project" onClick={() => move(1)} disabled={state.atEnd || !state.canScroll}><ArrowRight size={17}/></button>
         </div>

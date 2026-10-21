@@ -7,7 +7,7 @@ export function Projects({ projects, onOpen }: { projects: Project[]; onOpen: (p
     <section id="projects" className="section-anchor projects-section" aria-labelledby="projects-heading">
       <div className="content-container">
         <div id="projects-heading">
-          <SectionHeading eyebrow="SELECTED WORK" title="Explore my projects." aside={<span>Drag or swipe to explore · Select a project for details</span>}/>
+          <SectionHeading eyebrow="SELECTED WORK" title="Explore my projects." aside={<span>Browse projects with arrows or swipe, then open one for details.</span>}/>
         </div>
         <ProjectCarousel items={projects} onOpen={onOpen}/>
       </div>

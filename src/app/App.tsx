@@ -3,6 +3,8 @@ import type { Project } from '../types/project';
 import { projects } from '../data/projects';
 import { getPublishedProjects } from '../utils/projects';
 import { site } from '../data/site';
+import { experience } from '../data/experience';
+import { awards } from '../data/awards';
 import { FloatingNavbar } from '../components/layout/FloatingNavbar';
 import { Footer } from '../components/layout/Footer';
 import { Hero } from '../components/sections/Hero';
@@ -31,7 +33,12 @@ export function App() {
         <About />
         <Projects projects={visibleProjects} onOpen={openProject}/>
         <Skills />
-        <div className="content-container experience-awards-row"><Experience/><Awards/></div>
+        {(experience.length > 0 || awards.length > 0) && (
+          <div className={`content-container experience-awards-row ${experience.length === 0 || awards.length === 0 ? 'single-panel' : ''}`}>
+            {experience.length > 0 && <Experience />}
+            {awards.length > 0 && <Awards />}
+          </div>
+        )}
         <Contact />
       </main>
       <Footer />

@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUpRight, Download } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Download, Github } from 'lucide-react';
 import { profile } from '../../data/profile';
 import { assetUrl } from '../../utils/media';
 
@@ -17,9 +17,9 @@ export function Hero() {
           {profile.cv ? (
             <a className="button button-light" href={assetUrl(profile.cv)} download>Download CV <Download aria-hidden="true" size={15}/></a>
           ) : (
-            <button type="button" className="button button-light" disabled title="Add a PDF in public/profile and set profile.cv to activate download">
-              Download CV <Download aria-hidden="true" size={15}/>
-            </button>
+            <a className="button button-light" href="https://github.com/ArleneNero" target="_blank" rel="noopener noreferrer">
+              GitHub Profile <Github aria-hidden="true" size={16}/>
+            </a>
           )}
         </div>
         <p className="hero-specialties">DEVELOPMENT <span>·</span> PRODUCT THINKING <span>·</span> HUMAN-CENTERED DESIGN</p>
