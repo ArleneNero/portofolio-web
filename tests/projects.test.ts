@@ -6,15 +6,16 @@ import { projects } from '../src/data/projects';
 
 describe('project data', () => {
   it('filters drafts and sorts published entries without mutating input', () => {
-    const input = [{ ...projects[0]!, order: 3 }, { ...projects[1]!, order: 1 }, { ...projects[2]!, status: 'draft' as const }];
-    expect(getPublishedProjects(input).map(p => p.slug)).toEqual(['notehub', 'taskflow']);
+    const [first, second, third] = projects;
+    const input = [{ ...first!, order: 3 }, { ...second!, order: 1 }, { ...third!, status: 'draft' as const }];
+    expect(getPublishedProjects(input).map(p => p.slug)).toEqual([second!.slug, first!.slug]);
     expect(input[0]!.order).toBe(3);
-    expect(getProjectBySlug(input, 'sewaqu')).toBeUndefined();
+    expect(getProjectBySlug(input, third!.slug)).toBeUndefined();
   });
-  it('adding a published fourth project needs only a data object', () => {
-    const four = [...projects, { ...projects[0]!, id: 'new', slug: 'new-project', title: 'New', order: 4 }];
-    expect(getPublishedProjects(four)).toHaveLength(4);
-    expect(getProjectBySlug(four, 'new-project')?.title).toBe('New');
+  it('adding a published project needs only a data object', () => {
+    const extended = [...projects, { ...projects[0]!, id: 'new', slug: 'new-project', title: 'New', order: projects.length + 1 }];
+    expect(getPublishedProjects(extended)).toHaveLength(getPublishedProjects(projects).length + 1);
+    expect(getProjectBySlug(extended, 'new-project')?.title).toBe('New');
   });
   it('deduplicates cover/gallery and clamps gallery index', () => {
     const media = getProjectMedia({ ...projects[0]!, gallery: [projects[0]!.cover] });
