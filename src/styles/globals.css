@@ -423,3 +423,7 @@ body { line-height: 1.6; }
   .contact-section { width: calc(100% - 30px); }
   .project-card { flex-basis: 84%; }
 }
+
+/* Project case studies may provide multiple report/video/presentation links. */
+.modal-links { flex-wrap: wrap; justify-content: flex-end; }
+@media (max-width:720px){.modal-links { justify-content: flex-start; }}

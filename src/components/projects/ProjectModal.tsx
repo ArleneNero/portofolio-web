@@ -12,6 +12,9 @@ export function ProjectModal({ project, onClose, opener }: { project: Project; o
   const media = getProjectMedia(project);
   const demo = safeExternalUrl(project.links?.demo);
   const github = safeExternalUrl(project.links?.github);
+  const report = safeExternalUrl(project.links?.report);
+  const video = safeExternalUrl(project.links?.video);
+  const slides = safeExternalUrl(project.links?.slides);
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -52,9 +55,12 @@ export function ProjectModal({ project, onClose, opener }: { project: Project; o
         </div>
         <div className="modal-bottom">
           <div className="modal-stack" aria-label="Technology stack">{project.stack.map(item => <span key={item}>{item}</span>)}</div>
-          {(demo || github) && <div className="modal-links">
+          {(demo || github || report || video || slides) && <div className="modal-links">
             {demo && <a href={demo} target="_blank" rel="noopener noreferrer" className="button button-dark">Live Demo <ArrowUpRight size={15}/></a>}
             {github && <a href={github} target="_blank" rel="noopener noreferrer" className="button button-light"><Github size={15}/> Source Code</a>}
+            {report && <a href={report} target="_blank" rel="noopener noreferrer" className="button button-light">Read Report <ArrowUpRight size={15}/></a>}
+            {slides && <a href={slides} target="_blank" rel="noopener noreferrer" className="button button-light">Presentation <ArrowUpRight size={15}/></a>}
+            {video && <a href={video} target="_blank" rel="noopener noreferrer" className="button button-light">Watch Video <ArrowUpRight size={15}/></a>}
           </div>}
         </div>
       </div>
