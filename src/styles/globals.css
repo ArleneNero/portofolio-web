@@ -359,3 +359,67 @@ body { line-height: 1.6; }
   .carousel-status span { font-size: 11px; }
   .carousel-controls button { width: 42px; height: 42px; }
 }
+
+
+/* Layout pass: give desktop content room without stretching reading text. */
+:root {
+  --page-max: 1400px;
+  --page-gutter: clamp(24px, 4.5vw, 80px);
+}
+.content-container {
+  width: min(calc(100% - (var(--page-gutter) * 2)), var(--page-max));
+}
+.header-shell { max-width: var(--page-max); }
+.contact-section {
+  width: min(calc(100% - (var(--page-gutter) * 2)), var(--page-max));
+}
+.about-grid {
+  grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.9fr);
+  gap: clamp(36px, 5vw, 100px);
+}
+.about-bio { max-width: 66ch; }
+.about-photo-frame { max-width: 420px; }
+.project-card { flex-basis: clamp(330px, 32vw, 470px); }
+/* Native dialogs belong to the top layer. Explicit auto margins prevent
+   the CSS reset from pinning the popup to the top-left of the viewport. */
+.project-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(960px, calc(100vw - 64px));
+  max-width: none;
+  height: fit-content;
+  max-height: calc(100dvh - 64px);
+  overflow: hidden;
+}
+.modal-panel {
+  width: 100%;
+  max-height: calc(100dvh - 64px);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+@media (max-width: 960px) {
+  .about-grid { grid-template-columns: minmax(0, 1.2fr) minmax(250px, .8fr); gap: 30px; }
+  .about-photo-frame { max-width: 380px; }
+}
+@media (max-width: 720px) {
+  .content-container { width: min(calc(100% - 40px), 560px); }
+  .contact-section { width: min(calc(100% - 40px), 560px); }
+  .about-grid { display: flex; flex-direction: column; gap: 28px; }
+  .about-photo-frame { max-width: 400px; }
+  .project-card { flex-basis: min(86%, 362px); }
+  .project-dialog {
+    width: calc(100vw - 24px);
+    max-height: calc(100dvh - 24px);
+    border-radius: 16px;
+  }
+  .modal-panel {
+    max-height: calc(100dvh - 24px);
+    scrollbar-gutter: auto;
+  }
+}
+@media (max-width: 385px) {
+  .content-container { width: calc(100% - 30px); }
+  .contact-section { width: calc(100% - 30px); }
+  .project-card { flex-basis: 84%; }
+}
