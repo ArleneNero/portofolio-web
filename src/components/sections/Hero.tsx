@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUpRight, Download, Github } from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Download } from 'lucide-react';
 import { profile } from '../../data/profile';
 import { assetUrl } from '../../utils/media';
 
@@ -14,13 +14,9 @@ export function Hero() {
         <p className="hero-headline">{profile.headline}</p>
         <div className="hero-actions">
           <a className="button button-dark" href="#projects">View My Work <ArrowUpRight aria-hidden="true" size={15}/></a>
-          {profile.cv ? (
-            <a className="button button-light" href={assetUrl(profile.cv)} download>Download CV <Download aria-hidden="true" size={15}/></a>
-          ) : (
-            <a className="button button-light" href="https://github.com/ArleneNero" target="_blank" rel="noopener noreferrer">
-              GitHub Profile <Github aria-hidden="true" size={16}/>
-            </a>
-          )}
+          <a className="button button-light" href={assetUrl(profile.cv)} download="Muhammad_Ariefsyah_CV.pdf">
+            Download CV <Download aria-hidden="true" size={16}/>
+          </a>
         </div>
         <p className="hero-specialties">DEVELOPMENT <span>·</span> PRODUCT THINKING <span>·</span> HUMAN-CENTERED DESIGN</p>
         <a className="scroll-cue" href="#about" aria-label="Scroll to About Me"><ArrowDown size={17} strokeWidth={1.3}/><span>SCROLL TO EXPLORE</span></a>
