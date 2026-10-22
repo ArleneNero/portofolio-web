@@ -19,7 +19,7 @@ export function FloatingNavbar() {
   return (
     <header className="site-header">
       <div className="header-shell">
-        <a className="wordmark" href="#home" aria-label="Go to home">portfolio<span className="wordmark-dot">.</span></a>
+        <a className="wordmark" href="#home" aria-label="Go to home">portofolio<span className="wordmark-dot">.</span></a>
         <nav className="floating-nav" aria-label="Main navigation">
           {visibleSections.map((id) => (
             <a key={id} href={`#${id}`} className={`nav-link ${active === id ? 'is-active' : ''}`}
