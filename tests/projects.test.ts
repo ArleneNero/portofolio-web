@@ -26,6 +26,19 @@ describe('project data', () => {
     expect(formatCount(4)).toBe('04');
   });
 });
+describe('CV internship project additions', () => {
+  it('has all three verified project records with unique IDs and ordering', () => {
+    const slugs = ['hybrid-evidence-engine', 'foresight-mrt', 'xiaomimi-rag'];
+    for (const slug of slugs) {
+      const item = getProjectBySlug(projects, slug);
+      expect(item).toBeDefined();
+      expect(item?.links?.github).toMatch(/^https:\/\/github.com\/ArleneNero\//);
+      expect(item?.cover.src).toBe('projects/' + slug + '/cover.svg');
+    }
+    expect(new Set(projects.map(p => p.id)).size).toBe(projects.length);
+    expect(new Set(projects.map(p => p.order)).size).toBe(projects.length);
+  });
+});
 describe('safe paths and links', () => {
   it('supports both GitHub Pages and root base paths', () => {
     expect(assetUrl('/projects/a/cover.jpg', '/portofolio-web/')).toBe('/portofolio-web/projects/a/cover.jpg');

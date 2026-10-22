@@ -3,5 +3,5 @@ export const site = {
   description: 'Exploring intelligence through data, language, and code.',
   accentLabel: 'DESIGN × DEVELOPMENT',
   copyrightYear: 2026,
-  showSampleNotice: true,
+  showSampleNotice: false,
 };

@@ -2,7 +2,7 @@
 
 A responsive, single-page **React + Vite + TypeScript + Tailwind CSS** portfolio based on the approved [Figma V4](https://www.figma.com/design/T1DrZs505u4Lc7jTysqXMS?node-id=22-2). Horizontal carousel interaction is adapted from [ArleneNero/portofolio](https://github.com/ArleneNero/portofolio), but its old dark styling was intentionally not reused.
 
-> **Demo disclaimer:** ISI NAMA, TaskFlow, NoteHub, SewaQu, and project summaries/screens are **sample content**, not verified work. Profile portrait is the compressed Figma sample photo. Experience and Awards are intentionally empty until the owner adds verifiable entries. CV and email CTA stay disabled/hidden until real data is supplied.
+> **Content note:** Project case studies are grounded in public repositories, and the three new SVG cover artworks are illustrations rather than screenshots. Personal name, portrait, CV and contact details remain placeholders.
 
 ## 1. Requirements / local setup
 
