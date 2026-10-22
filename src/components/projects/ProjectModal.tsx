@@ -31,38 +31,71 @@ export function ProjectModal({ project, onClose, opener }: { project: Project; o
   }, [opener]);
 
   return (
-    <dialog
-      ref={dialogRef}
-      className="project-dialog"
-      aria-labelledby="project-dialog-title"
+    <dialog ref={dialogRef} className="project-dialog" aria-labelledby="project-dialog-title"
       aria-describedby="project-dialog-description"
       onCancel={(event) => { event.preventDefault(); onClose(); }}
       onClose={onClose}
       onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}>
       <div className="modal-panel">
-        <div className="modal-head">
-          <div>
-            <p className="eyebrow">{project.category.toUpperCase()} · {project.year} {project.isSample ? '· SAMPLE PROJECT' : ''}</p>
+        <header className="modal-head">
+          <div className="modal-heading-text">
+            <p className="eyebrow">{project.category} <span aria-hidden="true">/</span> {project.year}</p>
             <h2 id="project-dialog-title">{project.title}</h2>
-            <p id="project-dialog-description">{project.description}</p>
+            <p id="project-dialog-description" className="modal-lead">{project.summary}</p>
           </div>
           <button ref={closeRef} type="button" className="modal-close" onClick={onClose} aria-label="Close project details"><X size={20}/></button>
+        </header>
+        <div className="modal-case-grid">
+          <section className="modal-visuals" aria-label="Project visual evidence">
+            <ProjectGallery media={media} index={index} onIndex={setIndex} />
+            {project.scopeNote && <p className="modal-scope"><strong>Context:</strong> {project.scopeNote}</p>}
+          </section>
+          <div className="modal-story">
+            {!!project.metrics?.length && (
+              <section className="modal-metrics" aria-label="Project results">
+                {project.metrics.map((metric) => <div className="modal-metric" key={metric.label}>
+                  <strong>{metric.value}</strong>
+                  <span>{metric.label}</span>
+                  {metric.context && <small>{metric.context}</small>}
+                </div>)}
+              </section>
+            )}
+            <section className="modal-story-section">
+              <h3>The challenge</h3>
+              <p>{project.problem}</p>
+            </section>
+            <section className="modal-story-section">
+              <h3>My approach</h3>
+              <p>{project.solution}</p>
+            </section>
+            {!!project.contributions?.length && <section className="modal-story-section">
+              <h3>What I built</h3>
+              <ul className="modal-contributions">
+                {project.contributions.map((item) => <li key={item}>{item}</li>)}
+              </ul>
+            </section>}
+            <section className="modal-story-section modal-story-details">
+              <h3>Implementation details</h3>
+              <p>{project.description}</p>
+            </section>
+          </div>
         </div>
-        <ProjectGallery media={media} index={index} onIndex={setIndex}/>
-        <div className="modal-details">
-          <div><h3>THE CHALLENGE</h3><p>{project.problem}</p></div>
-          <div><h3>THE APPROACH</h3><p>{project.solution}</p></div>
-        </div>
-        <div className="modal-bottom">
-          <div className="modal-stack" aria-label="Technology stack">{project.stack.map(item => <span key={item}>{item}</span>)}</div>
-          {(demo || github || report || video || slides) && <div className="modal-links">
-            {demo && <a href={demo} target="_blank" rel="noopener noreferrer" className="button button-dark">Live Demo <ArrowUpRight size={15}/></a>}
-            {github && <a href={github} target="_blank" rel="noopener noreferrer" className="button button-light"><Github size={15}/> Source Code</a>}
-            {report && <a href={report} target="_blank" rel="noopener noreferrer" className="button button-light">Read Report <ArrowUpRight size={15}/></a>}
-            {slides && <a href={slides} target="_blank" rel="noopener noreferrer" className="button button-light">Presentation <ArrowUpRight size={15}/></a>}
-            {video && <a href={video} target="_blank" rel="noopener noreferrer" className="button button-light">Watch Video <ArrowUpRight size={15}/></a>}
+        <footer className="modal-bottom">
+          <div className="modal-tech">
+            <p className="modal-bottom-label">Tools & technologies</p>
+            <div className="modal-stack" aria-label="Technology stack">{project.stack.map((item) => <span key={item}>{item}</span>)}</div>
+          </div>
+          {(demo || github || report || video || slides) && <div className="modal-actions">
+            <p className="modal-bottom-label">Explore the project</p>
+            <div className="modal-links">
+              {demo && <a href={demo} target="_blank" rel="noopener noreferrer" className="button button-dark">Live Demo <ArrowUpRight size={15}/></a>}
+              {github && <a href={github} target="_blank" rel="noopener noreferrer" className="button button-light"><Github size={15}/> Repository</a>}
+              {report && <a href={report} target="_blank" rel="noopener noreferrer" className="button button-light">Report <ArrowUpRight size={15}/></a>}
+              {slides && <a href={slides} target="_blank" rel="noopener noreferrer" className="button button-light">Slides <ArrowUpRight size={15}/></a>}
+              {video && <a href={video} target="_blank" rel="noopener noreferrer" className="button button-light">Video <ArrowUpRight size={15}/></a>}
+            </div>
           </div>}
-        </div>
+        </footer>
       </div>
     </dialog>
   );
