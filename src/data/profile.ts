@@ -9,8 +9,8 @@ export const profile: Profile = {
   availability: 'OPEN FOR PROJECTS & OPPORTUNITIES',
   // Figma's portrait is a SAMPLE photo, not the owner's real image.
   photo: 'profile/portrait-placeholder.jpg',
-  // Add profile/cv.pdf and set cv: 'profile/cv.pdf' when the real CV exists.
-  cv: undefined,
+  // Public CV for the landing page download button.
+  cv: 'profile/cv.pdf',
   // Set a real address to enable contact by email.
   email: undefined,
   stats: [
