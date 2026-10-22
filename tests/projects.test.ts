@@ -33,9 +33,21 @@ describe('CV internship project additions', () => {
       const item = getProjectBySlug(projects, slug);
       expect(item).toBeDefined();
       expect(item?.links?.github).toMatch(/^https:\/\/github.com\/ArleneNero\//);
-      expect(item?.cover.src).toBe('projects/' + slug + '/cover.svg');
+      expect(item?.cover.src).toMatch(/^(projects\/[^/]+\/cover\.svg|https:\/\/raw\.githubusercontent\.com\/ArleneNero\/.+\.(png|jpg|webp))$/);
     }
     expect(new Set(projects.map(p => p.id)).size).toBe(projects.length);
+    expect(getPublishedProjects(projects).map(p => p.slug)).toEqual([
+      'xiaomimi-rag',
+      'hybrid-evidence-engine',
+      'coordinated-buzzer-detection',
+      'foresight-mrt',
+      'nusantara-museum',
+      'flood-disaster-extraction',
+      'sentiment-analysis',
+      'retail-crisis-recovery',
+    ]);
+    expect(getProjectBySlug(projects, 'hydro-chain-ai-protocol')).toBeUndefined();
+    expect(getProjectBySlug(projects, 'warkop-umkm-digitalization')).toBeUndefined();
     expect(new Set(projects.map(p => p.order)).size).toBe(projects.length);
   });
 });
