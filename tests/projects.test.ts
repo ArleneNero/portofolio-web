@@ -33,7 +33,7 @@ describe('CV internship project additions', () => {
       const item = getProjectBySlug(projects, slug);
       expect(item).toBeDefined();
       expect(item?.links?.github).toMatch(/^https:\/\/github.com\/ArleneNero\//);
-      expect(item?.cover.src).toMatch(/^(projects\/[^/]+\/cover\.svg|https:\/\/raw\.githubusercontent\.com\/ArleneNero\/.+\.(png|jpg|webp))$/);
+      expect(item?.cover.src).toMatch(/^projects\/[a-z-]+\/screenshot\.webp$/);
     }
     expect(new Set(projects.map(p => p.id)).size).toBe(projects.length);
     expect(getPublishedProjects(projects).map(p => p.slug)).toEqual([
