@@ -10,24 +10,33 @@ export function ProjectGallery({ media, index, onIndex }: { media: MediaAsset[];
   const step = (direction: number) => onIndex(clampIndex(active + direction, total));
 
   return (
-    <div className="gallery" role="region" aria-label="Project screenshots" tabIndex={0}
+    <div className="gallery" role="region" aria-label="Project visual preview" tabIndex={0}
       onKeyDown={(event) => {
         if (event.key === 'ArrowLeft') { event.preventDefault(); step(-1); }
         if (event.key === 'ArrowRight') { event.preventDefault(); step(1); }
       }}>
       <div className="gallery-media" aria-live="polite" aria-atomic="true">
         <div className="gallery-media-inner" key={item?.src || 'placeholder'}>
-          <SmartImage src={item?.src} alt={item?.alt || 'Project screenshot missing'} className="gallery-image" eager />
+          <SmartImage src={item?.src} alt={item?.alt || 'No project visual available'} className="gallery-image" eager />
         </div>
       </div>
       <div className="gallery-bottom">
-        <span className="gallery-caption">{item?.caption || 'Project screenshot'}</span>
-        <div className="gallery-pager">
-          <button type="button" onClick={() => step(-1)} aria-label="Previous screenshot" disabled={active <= 0}><ChevronLeft size={19}/></button>
-          <span className="gallery-count">{formatCount(total === 0 ? 0 : active + 1)} / {formatCount(total)}</span>
-          <button type="button" onClick={() => step(1)} aria-label="Next screenshot" disabled={total <= 1 || active >= total - 1}><ChevronRight size={19}/></button>
+        <p className="gallery-caption">{item?.caption || 'Project visual'}</p>
+        <div className="gallery-pager" aria-label="Gallery navigation">
+          <button type="button" onClick={() => step(-1)} aria-label="Previous visual" disabled={active <= 0}><ChevronLeft size={19}/></button>
+          <span className="gallery-count" aria-live="off">{formatCount(total ? active + 1 : 0)} / {formatCount(total)}</span>
+          <button type="button" onClick={() => step(1)} aria-label="Next visual" disabled={total <= 1 || active >= total - 1}><ChevronRight size={19}/></button>
         </div>
       </div>
+      {total > 1 && <div className="gallery-thumbnails" role="group" aria-label="Choose visual">
+        {media.map((visual, position) => (
+          <button key={visual.src} type="button" className={position === active ? 'gallery-thumb is-active' : 'gallery-thumb'}
+            onClick={() => onIndex(position)} aria-label={`Show visual ${position + 1} of ${total}`}
+            aria-pressed={position === active}>
+            <SmartImage src={visual.src} alt="" className="gallery-thumb-image"/>
+          </button>
+        ))}
+      </div>}
     </div>
   );
 }
